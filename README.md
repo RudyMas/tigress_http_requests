@@ -1,2 +1,2 @@
 # tigress_http_requests
-Tigress Module for HTTP Request
+Tigress Module for HTTP Requests

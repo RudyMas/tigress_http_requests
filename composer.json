@@ -17,15 +17,9 @@
     "guzzlehttp/guzzle": "^7",
     "monolog/monolog": "^3.9"
   },
-  "require-dev": {
-    "tigress/core": "dev-main"
-  },
   "autoload": {
     "psr-4": {
-      "Tigress\\": "src/",
-      "Controller\\": "src/controllers",
-      "Model\\": "src/models",
-      "Repository\\": "src/repositories"
+      "Tigress\\": "src/"
     }
   }
 }
