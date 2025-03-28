@@ -1,0 +1,31 @@
+{
+  "name": "tigress/http_requests",
+  "description": "Tigress HTTP Requests module",
+  "type": "library",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Rudy Mas",
+      "email": "rudy.mas@rudymas.be",
+      "homepage": "https://rudymas.be",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=8.4",
+    "guzzlehttp/guzzle": "^7",
+    "monolog/monolog": "^3.9"
+  },
+  "require-dev": {
+    "tigress/core": "dev-main"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tigress\\": "src/",
+      "Controller\\": "src/controllers",
+      "Model\\": "src/models",
+      "Repository\\": "src/repositories"
+    }
+  }
+}
