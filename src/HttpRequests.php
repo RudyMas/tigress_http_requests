@@ -40,7 +40,7 @@ class HttpRequests
      */
     public static function version(): string
     {
-        return '2025.03.28.2';
+        return '2025.03.28';
     }
 
     /**
