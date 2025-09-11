@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.03.28.2
+ * @version 2025.09.11.0
  * @package Tigress\HttpRequests
  */
 class HttpRequests
@@ -51,27 +51,20 @@ class HttpRequests
      * @param array|null $headers
      * @param string|null $username
      * @param string|null $password
+     * @param string $contentType
      * @return ResponseInterface
      * @throws GuzzleException
      */
     public function get(
-        string $url,
-        array $queryParams = [],
-        ?array $headers = null,
+        string  $url,
+        array   $queryParams = [],
+        ?array  $headers = null,
         ?string $username = null,
-        ?string $password = null
+        ?string $password = null,
+        string  $contentType = 'application/json'
     ): ResponseInterface
     {
-        return $this->sendRequest(
-            'GET',
-            $url,
-            null,
-            $headers,
-            $username,
-            $password,
-            'application/json',
-            $queryParams
-        );
+        return $this->sendRequest('GET', $url, null, $headers, $username, $password, $contentType, $queryParams);
     }
 
     /**
@@ -87,12 +80,12 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function post(
-        string $url,
-        string $body,
-        ?array $headers = null,
+        string  $url,
+        string  $body,
+        ?array  $headers = null,
         ?string $username = null,
         ?string $password = null,
-        string $contentType = 'application/json'
+        string  $contentType = 'application/json'
     ): ResponseInterface
     {
         return $this->sendRequest('POST', $url, $body, $headers, $username, $password, $contentType);
@@ -111,12 +104,12 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function put(
-        string $url,
-        string $body,
-        ?array $headers = null,
+        string  $url,
+        string  $body,
+        ?array  $headers = null,
         ?string $username = null,
         ?string $password = null,
-        string $contentType = 'application/json'
+        string  $contentType = 'application/json'
     ): ResponseInterface
     {
         return $this->sendRequest('PUT', $url, $body, $headers, $username, $password, $contentType);
@@ -135,12 +128,12 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function patch(
-        string $url,
-        string $body,
-        ?array $headers = null,
+        string  $url,
+        string  $body,
+        ?array  $headers = null,
         ?string $username = null,
         ?string $password = null,
-        string $contentType = 'application/json'
+        string  $contentType = 'application/json'
     ): ResponseInterface
     {
         return $this->sendRequest('PATCH', $url, $body, $headers, $username, $password, $contentType);
@@ -158,9 +151,9 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function delete(
-        string $url,
+        string  $url,
         ?string $body = null,
-        ?array $headers = null,
+        ?array  $headers = null,
         ?string $username = null,
         ?string $password = null
     ): ResponseInterface
@@ -181,10 +174,10 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function upload(
-        string $url,
-        array $files,
-        array $fields = [],
-        ?array $headers = null,
+        string  $url,
+        array   $files,
+        array   $fields = [],
+        ?array  $headers = null,
         ?string $username = null,
         ?string $password = null
     ): ResponseInterface
