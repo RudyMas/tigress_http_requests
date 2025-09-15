@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use SimpleXMLElement;
 
 /**
  * Class HttpRequests (PHP version 8.4)
@@ -13,7 +14,7 @@ use Psr\Log\LoggerInterface;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.09.15.1
+ * @version 2025.09.15.2
  * @package Tigress\HttpRequests
  */
 class HttpRequests
@@ -247,9 +248,18 @@ class HttpRequests
 
         if ($body !== null) {
             if (is_array($body) && str_contains($contentType, 'json')) {
-                $body = json_encode($body);
+                $options['body'] = json_encode($body);
+            } elseif (is_array($body) && str_contains($contentType, 'x-www-form-urlencoded')) {
+                $options['form_params'] = $body;
+                $options['body'] = null;
+            } elseif (is_array($body) && str_contains($contentType, 'xml')) {
+                $body = new SimpleXMLElement('<root/>')->addChild('data', htmlspecialchars(json_encode($body)));
+                $options['body'] = $body->asXML();
+            } elseif (is_array($body)) {
+                $options['body'] = http_build_query($body);
+            } else {
+                $options['body'] = $body;
             }
-            $options['body'] = $body;
         }
 
         if ($username !== null && $password !== null) {
