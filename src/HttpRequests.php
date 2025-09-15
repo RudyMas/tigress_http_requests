@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.09.11.0
+ * @version 2025.09.15.0
  * @package Tigress\HttpRequests
  */
 class HttpRequests
@@ -40,13 +40,14 @@ class HttpRequests
      */
     public static function version(): string
     {
-        return '2025.03.28';
+        return '2025.09.15';
     }
 
     /**
      * Perform a get HttpRequest
      *
      * @param string $url
+     * @param string|array|null $body
      * @param array $queryParams
      * @param array|null $headers
      * @param string|null $username
@@ -56,22 +57,23 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function get(
-        string  $url,
-        array   $queryParams = [],
-        ?array  $headers = null,
-        ?string $username = null,
-        ?string $password = null,
-        string  $contentType = 'application/json'
+        string            $url,
+        string|array|null $body = null,
+        array             $queryParams = [],
+        ?array            $headers = null,
+        ?string           $username = null,
+        ?string           $password = null,
+        string            $contentType = 'application/json'
     ): ResponseInterface
     {
-        return $this->sendRequest('GET', $url, null, $headers, $username, $password, $contentType, $queryParams);
+        return $this->sendRequest('GET', $url, $body, $headers, $username, $password, $contentType, $queryParams);
     }
 
     /**
      * Perform a post HttpRequest
      *
      * @param string $url
-     * @param string $body
+     * @param string|array $body
      * @param array|null $headers
      * @param string|null $username
      * @param string|null $password
@@ -80,12 +82,12 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function post(
-        string  $url,
-        string  $body,
-        ?array  $headers = null,
-        ?string $username = null,
-        ?string $password = null,
-        string  $contentType = 'application/json'
+        string       $url,
+        string|array $body,
+        ?array       $headers = null,
+        ?string      $username = null,
+        ?string      $password = null,
+        string       $contentType = 'application/json'
     ): ResponseInterface
     {
         return $this->sendRequest('POST', $url, $body, $headers, $username, $password, $contentType);
@@ -95,7 +97,7 @@ class HttpRequests
      * Perform a put HttpRequest
      *
      * @param string $url
-     * @param string $body
+     * @param string|array $body
      * @param array|null $headers
      * @param string|null $username
      * @param string|null $password
@@ -104,12 +106,12 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function put(
-        string  $url,
-        string  $body,
-        ?array  $headers = null,
-        ?string $username = null,
-        ?string $password = null,
-        string  $contentType = 'application/json'
+        string       $url,
+        string|array $body,
+        ?array       $headers = null,
+        ?string      $username = null,
+        ?string      $password = null,
+        string       $contentType = 'application/json'
     ): ResponseInterface
     {
         return $this->sendRequest('PUT', $url, $body, $headers, $username, $password, $contentType);
@@ -119,7 +121,7 @@ class HttpRequests
      * Perform a patch HttpRequest
      *
      * @param string $url
-     * @param string $body
+     * @param string|array $body
      * @param array|null $headers
      * @param string|null $username
      * @param string|null $password
@@ -128,12 +130,12 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function patch(
-        string  $url,
-        string  $body,
-        ?array  $headers = null,
-        ?string $username = null,
-        ?string $password = null,
-        string  $contentType = 'application/json'
+        string       $url,
+        string|array $body,
+        ?array       $headers = null,
+        ?string      $username = null,
+        ?string      $password = null,
+        string       $contentType = 'application/json'
     ): ResponseInterface
     {
         return $this->sendRequest('PATCH', $url, $body, $headers, $username, $password, $contentType);
@@ -143,7 +145,7 @@ class HttpRequests
      * Perform a delete HttpRequest
      *
      * @param string $url
-     * @param string|null $body
+     * @param string|array|null $body
      * @param array|null $headers
      * @param string|null $username
      * @param string|null $password
@@ -151,11 +153,11 @@ class HttpRequests
      * @throws GuzzleException
      */
     public function delete(
-        string  $url,
-        ?string $body = null,
-        ?array  $headers = null,
-        ?string $username = null,
-        ?string $password = null
+        string            $url,
+        string|array|null $body = null,
+        ?array            $headers = null,
+        ?string           $username = null,
+        ?string           $password = null
     ): ResponseInterface
     {
         return $this->sendRequest('DELETE', $url, $body, $headers, $username, $password);
@@ -216,7 +218,7 @@ class HttpRequests
      *
      * @param string $method
      * @param string $url
-     * @param string|null $body
+     * @param string|array|null $body
      * @param array|null $headers
      * @param string|null $username
      * @param string|null $password
@@ -226,14 +228,14 @@ class HttpRequests
      * @throws GuzzleException
      */
     private function sendRequest(
-        string  $method,
-        string  $url,
-        ?string $body = null,
-        ?array  $headers = null,
-        ?string $username = null,
-        ?string $password = null,
-        string  $contentType = 'application/json',
-        array   $queryParams = []
+        string            $method,
+        string            $url,
+        string|array|null $body = null,
+        ?array            $headers = null,
+        ?string           $username = null,
+        ?string           $password = null,
+        string            $contentType = 'application/json',
+        array             $queryParams = []
     ): ResponseInterface
     {
         $headers = $this->buildHeaders($headers, $contentType);
@@ -244,6 +246,9 @@ class HttpRequests
         ];
 
         if ($body !== null) {
+            if (is_array($body) && str_contains($contentType, 'json')) {
+                $body = json_encode($body);
+            }
             $options['body'] = $body;
         }
 
