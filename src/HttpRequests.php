@@ -14,7 +14,7 @@ use SimpleXMLElement;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.09.15.3
+ * @version 2025.09.15.4
  * @package Tigress\HttpRequests
  */
 class HttpRequests
@@ -247,12 +247,12 @@ class HttpRequests
         ];
 
         if ($body !== null) {
-            if (is_array($body) && str_contains($contentType, 'json')) {
+            if (is_array($body) && str_contains($headers['Content-Type'], 'json')) {
                 $options['body'] = json_encode($body);
-            } elseif (is_array($body) && str_contains($contentType, 'x-www-form-urlencoded')) {
+            } elseif (is_array($body) && str_contains($headers['Content-Type'], 'x-www-form-urlencoded')) {
                 $options['form_params'] = $body;
                 $options['body'] = null;
-            } elseif (is_array($body) && str_contains($contentType, 'xml')) {
+            } elseif (is_array($body) && str_contains($headers['Content-Type'], 'xml')) {
                 $body = new SimpleXMLElement('<root/>')->addChild('data', htmlspecialchars(json_encode($body)));
                 $options['body'] = $body->asXML();
             } elseif (is_array($body)) {
