@@ -16,7 +16,7 @@
     "php": ">=8.4",
     "ext-simplexml": "*",
     "guzzlehttp/guzzle": "^7",
-    "monolog/monolog": "^3.9",
+    "monolog/monolog": "^3.9"
   },
   "autoload": {
     "psr-4": {

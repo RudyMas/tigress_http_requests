@@ -14,7 +14,7 @@ use SimpleXMLElement;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.09.15.2
+ * @version 2025.09.15.3
  * @package Tigress\HttpRequests
  */
 class HttpRequests
@@ -314,7 +314,7 @@ class HttpRequests
         // Alleen voor non-multipart headers
         if (!str_contains($contentType, 'multipart')) {
             $headers['Content-Type'] ??= $contentType;
-            $headers['accept'] ??= $contentType;
+            $headers['Accept'] ??= $contentType;
         }
 
         return $headers;
