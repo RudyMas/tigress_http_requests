@@ -270,24 +270,22 @@ class HttpRequests
      */
     private function sendRawRequest(string $method, string $url, array $options): ResponseInterface
     {
-        $fullUrl = $this->baseUri . $url;
-
-        if ($this->logger) {
-            $this->logger->info("HTTP {$method} request to {$fullUrl}", $options);
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            $fullUrl = $url;
+        } else {
+            $fullUrl = $this->baseUri . $url;
         }
+
+        $this->logger?->info("HTTP {$method} request to {$fullUrl}", $options);
 
         try {
             $response = $this->httpClient->request($method, $fullUrl, $options);
 
-            if ($this->logger) {
-                $this->logger->info("Received response with status {$response->getStatusCode()}");
-            }
+            $this->logger?->info("Received response with status {$response->getStatusCode()}");
 
             return $response;
         } catch (GuzzleException $e) {
-            if ($this->logger) {
-                $this->logger->error("HTTP request failed: " . $e->getMessage());
-            }
+            $this->logger?->error("HTTP request failed: " . $e->getMessage());
             throw $e;
         }
     }
