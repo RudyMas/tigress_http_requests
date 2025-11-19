@@ -14,7 +14,7 @@ use SimpleXMLElement;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.09.18.0
+ * @version 2025.11.19.0
  * @package Tigress\HttpRequests
  */
 class HttpRequests
@@ -296,7 +296,7 @@ class HttpRequests
             $fullUrl = $this->baseUri . $url;
         }
 
-        $this->logger?->info("HTTP {$method} request to {$fullUrl}", $options);
+        $this->logger?->info("HTTP {$method} request to {$fullUrl}");
 
         try {
             $response = $this->httpClient->request($method, $fullUrl, $options);
